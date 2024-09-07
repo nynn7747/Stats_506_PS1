@@ -4,16 +4,115 @@ format: html
 editor: visual
 ---
 
-## Quarto
+# Problem set 1
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Problem 1
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+### a. Import data and rename columns
 
 ```{r}
-1 + 1
+#| echo: false
+#| code-fold: true
+# Import data
+wine <- read.csv("/Users/nynn/Library/CloudStorage/OneDrive-Umich/Umich course/2024_Fall/Stats 506/Stats_506_PS1/wine/wine.data", header = FALSE)
+
+# Change names according to wine.name
+names(wine)
+names <- c("Class", "Alcohol", "Malic acid", "Ash",
+            "Alcalinity of ash",  "Magnesium", "Total phenols", "Flavanoids",
+            "Nonflavanoid phenols", "Proanthocyanins", "Color intensity", 
+           "Hue", "OD280/OD315 of diluted wines", "Proline")
+names(wine) <- names
+head(wine)
+
+```
+
+###  b. Check data
+
+```{r}
+#| code-fold: true
+# Check wine classes
+table(wine$Class)
+```
+
+### c.1 What is the correlation between alcohol content and color intensity?
+
+```{r}
+#| code-fold: true
+plot(x=wine$Alcohol, y=wine$`Color intensity`)
+round(cor(x=wine$Alcohol, y=wine$`Color intensity`), 2)
+
+```
+
+**The correlation between alcohol content and color intensity is 0.55.**
+
+### c.2 Which class has the highest correlation? Which has the lowest?
+
+```{r}
+#| code-fold: true
+class(wine$Class)
+
+## Creat a function to calculate the correlation within each class
+cor_class <- function(class) {
+  cor <- cor(x=wine$Alcohol[wine$Class == class], 
+             y=wine$`Color intensity`[wine$Class == class])
+  print(paste("Class", as.character(class), ": ", as.character(round(cor, 2))))
+  return(cor)
+}
+
+class <- unique(wine$Class)
+sapply(class, cor_class)
+```
+
+**Class 1 has the highest correlation of 0.41 and Class 2 has the lowest correlation of 0.27.**
+
+### c.3 What is the alcohol content of the wine with the highest color intensity?
+
+```{r}
+wine$Alcohol[which.max(wine$`Color intensity`)]
+```
+
+**The alcohol content of the wine with the highest color intensity is 14.34%.**
+
+### c.4 What percentage of wines had a higher content of proanthocyanins compare to ash?
+
+```{r}
+#| code-fold: true
+n_true <- nrow(wine[(wine$Proanthocyanins > wine$Ash), ] )
+n_total <- nrow(wine)
+prop_true <- 100* round(n_true/n_total,4)
+print(paste("Percentage: ", prop_true, "%"))
+```
+
+**8.43% wines had a higher content of proanthocyanins compare to ash.**
+
+```{r}
+## Creat a function to calculate the mean for each variable and within classes
+
+calculte_mean <- function() {
+  class <- c(0, 1, 2, 3)
+  
+  colmean_class <- function(class) {
+    # Select class
+    if (class == 0) {
+    selected_class <- wine[ , 2:14]
+     } else {
+    selected_class <- wine[ , 2:14][wine$Class == class, ]}
+    # Calculate
+    mean <- colMeans(selected_class)
+    return(mean)
+  }
+  
+  m <- sapply(class, colmean_class)
+  # Rename cols
+  colnames(m) <- c("Overall", "Class 1", "Class 2", "Class 3") 
+  
+  return(m)
+}
+
+## Use the function
+calculte_mean()
+
 ```
 
 You can add options to executable code like this
