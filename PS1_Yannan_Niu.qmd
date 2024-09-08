@@ -11,7 +11,6 @@ editor: visual
 ### a. Import data and rename columns
 
 ```{r}
-#| echo: false
 #| code-fold: true
 # Import data
 wine <- read.csv("/Users/nynn/Library/CloudStorage/OneDrive-Umich/Umich course/2024_Fall/Stats 506/Stats_506_PS1/wine/wine.data", header = FALSE)
@@ -69,6 +68,7 @@ sapply(class, cor_class)
 ### c.3 What is the alcohol content of the wine with the highest color intensity?
 
 ```{r}
+#| code-fold: true
 wine$Alcohol[which.max(wine$`Color intensity`)]
 ```
 
@@ -86,7 +86,10 @@ print(paste("Percentage: ", prop_true, "%"))
 
 **8.43% wines had a higher content of proanthocyanins compare to ash.**
 
+### d. Create a table for average values
+
 ```{r}
+#| code-fold: true
 ## Creat a function to calculate the mean for each variable and within classes
 
 calculte_mean <- function() {
@@ -115,11 +118,25 @@ calculte_mean()
 
 ```
 
-You can add options to executable code like this
+### e. T test for three classes
 
 ```{r}
-#| echo: false
-2 * 2
+#| code-fold: true
+# Subest dataset for different classes
+phe_class_1 <- wine$`Nonflavanoid phenols`[wine$Class == 1]
+phe_class_2 <- wine$`Nonflavanoid phenols`[wine$Class == 2]
+phe_class_3 <- wine$`Nonflavanoid phenols`[wine$Class == 3]
+
+ttest_12 <- t.test(phe_class_1, phe_class_2)
+ttest_13 <- t.test(phe_class_1, phe_class_3)
+ttest_23 <- t.test(phe_class_2, phe_class_3)
+ttest_12$statistic
+ttest_12$p.value < 0.05
+ttest_13$statistic
+ttest_13$p.value < 0.05
+ttest_23$statistic
+ttest_23$p.value < 0.05
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+**The t-tests result in large t-values and p-values less than 0.05 indicate significant differences in phenol levels across the three wine classes. These results suggest that phenol levels are not uniform across the classes, with each group showing distinct mean differences.**

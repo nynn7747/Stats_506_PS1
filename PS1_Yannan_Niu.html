@@ -100,8 +100,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Problem set 1</h1>
 <section id="problem-1" class="level2">
 <h2 class="anchored" data-anchor-id="problem-1">Problem 1</h2>
-<section id="import-data-rename-columns-and-check-data" class="level3">
-<h3 class="anchored" data-anchor-id="import-data-rename-columns-and-check-data">Import data, rename columns, and check data</h3>
+<section id="a.-import-data-and-rename-columns" class="level3">
+<h3 class="anchored" data-anchor-id="a.-import-data-and-rename-columns">a. Import data and rename columns</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -147,6 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5                         2.93     735
 6                         2.85    1450</code></pre>
 </div>
+</div>
+</section>
+<section id="b.-check-data" class="level3">
+<h3 class="anchored" data-anchor-id="b.-check-data">b. Check data</h3>
+<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check wine classes</span></span>
@@ -159,40 +164,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="what-is-the-correlation-between-alcohol-content-and-color-intensity" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-the-correlation-between-alcohol-content-and-color-intensity">What is the correlation between alcohol content and color intensity?</h3>
+<section id="c.1-what-is-the-correlation-between-alcohol-content-and-color-intensity" class="level3">
+<h3 class="anchored" data-anchor-id="c.1-what-is-the-correlation-between-alcohol-content-and-color-intensity">c.1 What is the correlation between alcohol content and color intensity?</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>wine<span class="sc">$</span>Alcohol, <span class="at">y=</span>wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="PS1_Yannan_Niu_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="PS1_Yannan_Niu_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(<span class="at">x=</span>wine<span class="sc">$</span>Alcohol, <span class="at">y=</span>wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.55</code></pre>
 </div>
 </div>
 <p><strong>The correlation between alcohol content and color intensity is 0.55.</strong></p>
 </section>
-<section id="which-class-has-the-highest-correlation-which-has-the-lowest" class="level3">
-<h3 class="anchored" data-anchor-id="which-class-has-the-highest-correlation-which-has-the-lowest">Which class has the highest correlation? Which has the lowest?</h3>
+<section id="c.2-which-class-has-the-highest-correlation-which-has-the-lowest" class="level3">
+<h3 class="anchored" data-anchor-id="c.2-which-class-has-the-highest-correlation-which-has-the-lowest">c.2 Which class has the highest correlation? Which has the lowest?</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(wine<span class="sc">$</span>Class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "integer"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cor_class <span class="ot">&lt;-</span> <span class="cf">function</span>(class) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="at">x=</span>wine<span class="sc">$</span>Alcohol[wine<span class="sc">$</span>Class <span class="sc">==</span> class], </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">y=</span>wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>[wine<span class="sc">$</span>Class <span class="sc">==</span> class])</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Class"</span>, <span class="fu">as.character</span>(class), <span class="st">": "</span>, <span class="fu">as.character</span>(<span class="fu">round</span>(cor, <span class="dv">2</span>))))</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(cor)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>class <span class="ot">&lt;-</span> <span class="fu">unique</span>(wine<span class="sc">$</span>Class)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(class, cor_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Creat a function to calculate the correlation within each class</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cor_class <span class="ot">&lt;-</span> <span class="cf">function</span>(class) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="at">x=</span>wine<span class="sc">$</span>Alcohol[wine<span class="sc">$</span>Class <span class="sc">==</span> class], </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">y=</span>wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>[wine<span class="sc">$</span>Class <span class="sc">==</span> class])</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Class"</span>, <span class="fu">as.character</span>(class), <span class="st">": "</span>, <span class="fu">as.character</span>(<span class="fu">round</span>(cor, <span class="dv">2</span>))))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(cor)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>class <span class="ot">&lt;-</span> <span class="fu">unique</span>(wine<span class="sc">$</span>Class)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(class, cor_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Class 1 :  0.41"
 [1] "Class 2 :  0.27"
@@ -202,14 +220,141 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 0.4082913 0.2697891 0.3503777</code></pre>
 </div>
 </div>
-<p><strong>Class 1 has the highest correlation of 0.41 and Class 2 has the lowest correlation of 0.27</strong></p>
-<p>You can add options to executable code like this</p>
+<p><strong>Class 1 has the highest correlation of 0.41 and Class 2 has the lowest correlation of 0.27.</strong></p>
+</section>
+<section id="c.3-what-is-the-alcohol-content-of-the-wine-with-the-highest-color-intensity" class="level3">
+<h3 class="anchored" data-anchor-id="c.3-what-is-the-alcohol-content-of-the-wine-with-the-highest-color-intensity">c.3 What is the alcohol content of the wine with the highest color intensity?</h3>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>wine<span class="sc">$</span>Alcohol[<span class="fu">which.max</span>(wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
+<pre><code>[1] 14.34</code></pre>
 </div>
 </div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+<p><strong>The alcohol content of the wine with the highest color intensity is 14.34%.</strong></p>
+</section>
+<section id="c.4-what-percentage-of-wines-had-a-higher-content-of-proanthocyanins-compare-to-ash" class="level3">
+<h3 class="anchored" data-anchor-id="c.4-what-percentage-of-wines-had-a-higher-content-of-proanthocyanins-compare-to-ash">c.4 What percentage of wines had a higher content of proanthocyanins compare to ash?</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n_true <span class="ot">&lt;-</span> <span class="fu">nrow</span>(wine[(wine<span class="sc">$</span>Proanthocyanins <span class="sc">&gt;</span> wine<span class="sc">$</span>Ash), ] )</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>n_total <span class="ot">&lt;-</span> <span class="fu">nrow</span>(wine)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>prop_true <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">*</span> <span class="fu">round</span>(n_true<span class="sc">/</span>n_total,<span class="dv">4</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Percentage: "</span>, prop_true, <span class="st">"%"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Percentage:  8.43 %"</code></pre>
+</div>
+</div>
+<p><strong>8.43% wines had a higher content of proanthocyanins compare to ash.</strong></p>
+</section>
+<section id="d.-create-a-table-for-average-values" class="level3">
+<h3 class="anchored" data-anchor-id="d.-create-a-table-for-average-values">d.&nbsp;Create a table for average values</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Creat a function to calculate the mean for each variable and within classes</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>calculte_mean <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  class <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  colmean_class <span class="ot">&lt;-</span> <span class="cf">function</span>(class) {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select class</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (class <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    selected_class <span class="ot">&lt;-</span> wine[ , <span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>     } <span class="cf">else</span> {</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    selected_class <span class="ot">&lt;-</span> wine[ , <span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>][wine<span class="sc">$</span>Class <span class="sc">==</span> class, ]}</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(selected_class)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(mean)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">sapply</span>(class, colmean_class)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Rename cols</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Overall"</span>, <span class="st">"Class 1"</span>, <span class="st">"Class 2"</span>, <span class="st">"Class 3"</span>) </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(m)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the function</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="fu">calculte_mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                 Overall     Class 1    Class 2     Class 3
+Alcohol                       13.0006180   13.744746  12.278732  13.1537500
+Malic acid                     2.3363483    2.010678   1.932676   3.3337500
+Ash                            2.3665169    2.455593   2.244789   2.4370833
+Alcalinity of ash             19.4949438   17.037288  20.238028  21.4166667
+Magnesium                     99.7415730  106.338983  94.549296  99.3125000
+Total phenols                  2.2951124    2.840169   2.258873   1.6787500
+Flavanoids                     2.0292697    2.982373   2.080845   0.7814583
+Nonflavanoid phenols           0.3618539    0.290000   0.363662   0.4475000
+Proanthocyanins                1.5908989    1.899322   1.630282   1.1535417
+Color intensity                5.0580899    5.528305   3.086620   7.3962500
+Hue                            0.9574494    1.062034   1.056282   0.6827083
+OD280/OD315 of diluted wines   2.6116854    3.157797   2.785352   1.6835417
+Proline                      746.8932584 1115.711864 519.507042 629.8958333</code></pre>
+</div>
+</div>
+</section>
+<section id="e.-t-test-for-three-classes" class="level3">
+<h3 class="anchored" data-anchor-id="e.-t-test-for-three-classes">e. T test for three classes</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subest dataset for different classes</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>phe_class_1 <span class="ot">&lt;-</span> wine<span class="sc">$</span><span class="st">`</span><span class="at">Nonflavanoid phenols</span><span class="st">`</span>[wine<span class="sc">$</span>Class <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>phe_class_2 <span class="ot">&lt;-</span> wine<span class="sc">$</span><span class="st">`</span><span class="at">Nonflavanoid phenols</span><span class="st">`</span>[wine<span class="sc">$</span>Class <span class="sc">==</span> <span class="dv">2</span>]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>phe_class_3 <span class="ot">&lt;-</span> wine<span class="sc">$</span><span class="st">`</span><span class="at">Nonflavanoid phenols</span><span class="st">`</span>[wine<span class="sc">$</span>Class <span class="sc">==</span> <span class="dv">3</span>]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>ttest_12 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(phe_class_1, phe_class_2)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>ttest_13 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(phe_class_1, phe_class_3)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>ttest_23 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(phe_class_2, phe_class_3)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>ttest_12<span class="sc">$</span>statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        t 
+-4.255743 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ttest_12<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ttest_13<span class="sc">$</span>statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        t 
+-7.833759 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ttest_13<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ttest_23<span class="sc">$</span>statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        t 
+-3.616252 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ttest_23<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p><strong>The t-tests result in large t-values and p-values less than 0.05 indicate significant differences in phenol levels across the three wine classes. These results suggest that phenol levels are not uniform across the classes, with each group showing distinct mean differences.</strong></p>
 </section>
 </section>
 </section>
