@@ -140,3 +140,108 @@ ttest_23$p.value < 0.05
 ```
 
 **The t-tests result in large t-values and p-values less than 0.05 indicate significant differences in phenol levels across the three wine classes. These results suggest that phenol levels are not uniform across the classes, with each group showing distinct mean differences.**
+
+## Problem 2
+
+### a. Import data
+
+```{r}
+#| code-fold: true
+AskAManager <- read.csv("/Users/nynn/Library/CloudStorage/OneDrive-Umich/Umich course/2024_Fall/Stats 506/Stats_506_PS1/AskAManager.csv")
+```
+
+### b. Rename variables
+
+```{r}
+#| code-fold: true
+names(AskAManager)
+  
+new_names <- c("ID", "Time", "Age", "Industry", "Job", "Job_add",
+                        "Salary", "Compensation", "Currency", "Currency_add",
+                        "Income_add", "Country", "State", "City", "Work_Year_All", 
+                        "Work_Year_Field", "Education", "Gender", "Race")
+length(new_names)
+
+names(AskAManager) <- new_names
+```
+
+### c. Restrict data with USD
+
+```{r}
+#| code-fold: true
+print(paste("The number of observation before restriction: ", nrow(AskAManager)))
+AskAManager_USD <- AskAManager[AskAManager$Currency == "USD", ]
+print(paste("The number of observation after restriction: ", nrow(AskAManager_USD)))
+```
+
+### d. Restrict age with 18
+
+```{r}
+#| code-fold: true
+unique(AskAManager$Age)
+unique(AskAManager$Work_Year_All)
+unique(AskAManager$Work_Year_Field)
+
+# Factor variables
+AskAManager$Age_new <- as.numeric(factor(AskAManager$Age, levels = c("under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65 or over")))
+AskAManager$Work_Year_All_new <- as.numeric(factor(AskAManager$Work_Year_All, levels = c("1 year or less", "2 - 4 years", "5-7 years", "8 - 10 years", "11 - 20 years", "21 - 30 years", "31 - 40 years", "41 years or more")))
+AskAManager$Work_Year_Field_new <- as.numeric(factor(AskAManager$Work_Year_Field, levels = c("1 year or less", "2 - 4 years", "5-7 years", "8 - 10 years", "11 - 20 years", "21 - 30 years", "31 - 40 years", "41 years or more")))
+
+# Function for the maximum work years
+Work_All_most_calculate<- function(Age_new) {
+  if (as.numeric(Age_new) == 1) {
+    Work_Year_All_most = 0
+  } else if(as.numeric(Age_new) == 2) {
+    Work_Year_All_most = 3
+  } else {
+    Work_Year_All_most = Age_new + 2
+  }
+  return(Work_Year_All_most)
+}
+AskAManager$Max_Work_Year_All <- sapply(AskAManager$Age_new, Work_All_most_calculate)
+
+# Employee must be (a) larger than 18, 
+                #  (b) length should be less than years since 18, 
+                #  (c) field work time should be less than all work time 
+AskAManager_Age <- AskAManager[AskAManager$Age_new > 1 
+                    & AskAManager$Work_Year_All_new <= AskAManager$Max_Work_Year_All
+                    & AskAManager$Work_Year_All_new >= AskAManager$Work_Year_Field_new, ]
+
+print(paste("The number of observation before restriction: ", nrow(AskAManager)))
+print(paste("The number of observation after restriction: ", nrow(AskAManager_Age)))
+
+```
+
+### e. Restrict salaries
+
+**I used the 95% confidence interval as the threshold for valid salary. I assumed the salary distributes normally because of the large sample size.**
+
+```{r}
+summary(AskAManager$Salary)
+
+mean <- mean(AskAManager$Salary)
+sd <- sd(AskAManager$Salary)
+n <- length(AskAManager$Salary)
+se <- sd/sqrt(n)
+
+# Assume normal distribution, z = 1.96 for 95%
+lower <- mean - 1.96 * se
+upper <- mean + 1.96 * se
+
+AskAManager_Salary <- AskAManager[AskAManager$Salary >= lower & AskAManager$Salary <= upper, ]
+print(paste("The number of observation before restriction: ", nrow(AskAManager)))
+print(paste("The number of observation after restriction: ", nrow(AskAManager_Salary)))
+
+```
+
+### f. Statistical association between education and salary
+
+```{r}
+AskAManager$Education <- as.factor(AskAManager$Education)
+
+model <- lm(Salary ~ Education + Work_Year_All + Work_Year_Field, data = AskAManager)
+
+summary(model)
+```
+
+**After controlling years of experience with the total work years and the work year in a specific field, there is no significant association between education and salary.**
