@@ -225,7 +225,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="c.3-what-is-the-alcohol-content-of-the-wine-with-the-highest-color-intensity" class="level3">
 <h3 class="anchored" data-anchor-id="c.3-what-is-the-alcohol-content-of-the-wine-with-the-highest-color-intensity">c.3 What is the alcohol content of the wine with the highest color intensity?</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>wine<span class="sc">$</span>Alcohol[<span class="fu">which.max</span>(wine<span class="sc">$</span><span class="st">`</span><span class="at">Color intensity</span><span class="st">`</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 14.34</code></pre>
 </div>
@@ -355,6 +358,395 @@ Proline                      746.8932584 1115.711864 519.507042 629.8958333</cod
 </div>
 </div>
 <p><strong>The t-tests result in large t-values and p-values less than 0.05 indicate significant differences in phenol levels across the three wine classes. These results suggest that phenol levels are not uniform across the classes, with each group showing distinct mean differences.</strong></p>
+</section>
+</section>
+<section id="problem-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2">Problem 2</h2>
+<section id="a.-import-data" class="level3">
+<h3 class="anchored" data-anchor-id="a.-import-data">a. Import data</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>AskAManager <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/Users/nynn/Library/CloudStorage/OneDrive-Umich/Umich course/2024_Fall/Stats 506/Stats_506_PS1/AskAManager.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="b.-rename-variables" class="level3">
+<h3 class="anchored" data-anchor-id="b.-rename-variables">b. Rename variables</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(AskAManager)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "X"                                                                                                                                                                                                                                   
+ [2] "Timestamp"                                                                                                                                                                                                                           
+ [3] "How.old.are.you."                                                                                                                                                                                                                    
+ [4] "What.industry.do.you.work.in."                                                                                                                                                                                                       
+ [5] "Job.title"                                                                                                                                                                                                                           
+ [6] "If.your.job.title.needs.additional.context..please.clarify.here."                                                                                                                                                                    
+ [7] "What.is.your.annual.salary...You.ll.indicate.the.currency.in.a.later.question..If.you.are.part.time.or.hourly..please.enter.an.annualized.equivalent....what.you.would.earn.if.you.worked.the.job.40.hours.a.week..52.weeks.a.year.."
+ [8] "How.much.additional.monetary.compensation.do.you.get..if.any..for.example..bonuses.or.overtime.in.an.average.year...Please.only.include.monetary.compensation.here..not.the.value.of.benefits."                                      
+ [9] "Please.indicate.the.currency"                                                                                                                                                                                                        
+[10] "If..Other...please.indicate.the.currency.here.."                                                                                                                                                                                     
+[11] "If.your.income.needs.additional.context..please.provide.it.here."                                                                                                                                                                    
+[12] "What.country.do.you.work.in."                                                                                                                                                                                                        
+[13] "If.you.re.in.the.U.S...what.state.do.you.work.in."                                                                                                                                                                                   
+[14] "What.city.do.you.work.in."                                                                                                                                                                                                           
+[15] "How.many.years.of.professional.work.experience.do.you.have.overall."                                                                                                                                                                 
+[16] "How.many.years.of.professional.work.experience.do.you.have.in.your.field."                                                                                                                                                           
+[17] "What.is.your.highest.level.of.education.completed."                                                                                                                                                                                  
+[18] "What.is.your.gender."                                                                                                                                                                                                                
+[19] "What.is.your.race...Choose.all.that.apply.."                                                                                                                                                                                         </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>new_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"Time"</span>, <span class="st">"Age"</span>, <span class="st">"Industry"</span>, <span class="st">"Job"</span>, <span class="st">"Job_add"</span>,</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Salary"</span>, <span class="st">"Compensation"</span>, <span class="st">"Currency"</span>, <span class="st">"Currency_add"</span>,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Income_add"</span>, <span class="st">"Country"</span>, <span class="st">"State"</span>, <span class="st">"City"</span>, <span class="st">"Work_Year_All"</span>, </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Work_Year_Field"</span>, <span class="st">"Education"</span>, <span class="st">"Gender"</span>, <span class="st">"Race"</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(new_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(AskAManager) <span class="ot">&lt;-</span> new_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="c.-restrict-data-with-usd" class="level3">
+<h3 class="anchored" data-anchor-id="c.-restrict-data-with-usd">c.&nbsp;Restrict data with USD</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation before restriction: "</span>, <span class="fu">nrow</span>(AskAManager)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation before restriction:  28062"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>AskAManager_USD <span class="ot">&lt;-</span> AskAManager[AskAManager<span class="sc">$</span>Currency <span class="sc">==</span> <span class="st">"USD"</span>, ]</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation after restriction: "</span>, <span class="fu">nrow</span>(AskAManager_USD)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation after restriction:  23374"</code></pre>
+</div>
+</div>
+</section>
+<section id="d.-restrict-age-with-18" class="level3">
+<h3 class="anchored" data-anchor-id="d.-restrict-age-with-18">d.&nbsp;Restrict age with 18</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(AskAManager<span class="sc">$</span>Age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "25-34"      "45-54"      "35-44"      "18-24"      "65 or over"
+[6] "55-64"      "under 18"  </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(AskAManager<span class="sc">$</span>Work_Year_All)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "5-7 years"        "8 - 10 years"     "2 - 4 years"      "21 - 30 years"   
+[5] "11 - 20 years"    "1 year or less"   "41 years or more" "31 - 40 years"   </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(AskAManager<span class="sc">$</span>Work_Year_Field)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "5-7 years"        "2 - 4 years"      "21 - 30 years"    "11 - 20 years"   
+[5] "1 year or less"   "8 - 10 years"     "31 - 40 years"    "41 years or more"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Factor variables</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>AskAManager<span class="sc">$</span>Age_new <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(AskAManager<span class="sc">$</span>Age, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"under 18"</span>, <span class="st">"18-24"</span>, <span class="st">"25-34"</span>, <span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span>, <span class="st">"65 or over"</span>)))</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>AskAManager<span class="sc">$</span>Work_Year_All_new <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(AskAManager<span class="sc">$</span>Work_Year_All, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1 year or less"</span>, <span class="st">"2 - 4 years"</span>, <span class="st">"5-7 years"</span>, <span class="st">"8 - 10 years"</span>, <span class="st">"11 - 20 years"</span>, <span class="st">"21 - 30 years"</span>, <span class="st">"31 - 40 years"</span>, <span class="st">"41 years or more"</span>)))</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>AskAManager<span class="sc">$</span>Work_Year_Field_new <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(AskAManager<span class="sc">$</span>Work_Year_Field, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1 year or less"</span>, <span class="st">"2 - 4 years"</span>, <span class="st">"5-7 years"</span>, <span class="st">"8 - 10 years"</span>, <span class="st">"11 - 20 years"</span>, <span class="st">"21 - 30 years"</span>, <span class="st">"31 - 40 years"</span>, <span class="st">"41 years or more"</span>)))</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Function for the maximum work years</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>Work_All_most_calculate<span class="ot">&lt;-</span> <span class="cf">function</span>(Age_new) {</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">as.numeric</span>(Age_new) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    Work_Year_All_most <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(<span class="fu">as.numeric</span>(Age_new) <span class="sc">==</span> <span class="dv">2</span>) {</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    Work_Year_All_most <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>    Work_Year_All_most <span class="ot">=</span> Age_new <span class="sc">+</span> <span class="dv">2</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(Work_Year_All_most)</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>AskAManager<span class="sc">$</span>Max_Work_Year_All <span class="ot">&lt;-</span> <span class="fu">sapply</span>(AskAManager<span class="sc">$</span>Age_new, Work_All_most_calculate)</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Employee must be (a) larger than 18, </span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>                <span class="co">#  (b) length should be less than years since 18, </span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>                <span class="co">#  (c) field work time should be less than all work time </span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>AskAManager_Age <span class="ot">&lt;-</span> AskAManager[AskAManager<span class="sc">$</span>Age_new <span class="sc">&gt;</span> <span class="dv">1</span> </span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>                    <span class="sc">&amp;</span> AskAManager<span class="sc">$</span>Work_Year_All_new <span class="sc">&lt;=</span> AskAManager<span class="sc">$</span>Max_Work_Year_All</span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>                    <span class="sc">&amp;</span> AskAManager<span class="sc">$</span>Work_Year_All_new <span class="sc">&gt;=</span> AskAManager<span class="sc">$</span>Work_Year_Field_new, ]</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation before restriction: "</span>, <span class="fu">nrow</span>(AskAManager)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation before restriction:  28062"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation after restriction: "</span>, <span class="fu">nrow</span>(AskAManager_Age)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation after restriction:  27752"</code></pre>
+</div>
+</div>
+</section>
+<section id="e.-restrict-salaries" class="level3">
+<h3 class="anchored" data-anchor-id="e.-restrict-salaries">e. Restrict salaries</h3>
+<p><strong>I used the 95% confidence interval as the threshold for valid salary. I assumed the salary distributes normally because of the large sample size.</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(AskAManager<span class="sc">$</span>Salary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+0.000e+00 5.400e+04 7.500e+04 3.614e+05 1.100e+05 6.000e+09 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(AskAManager<span class="sc">$</span>Salary)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(AskAManager<span class="sc">$</span>Salary)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(AskAManager<span class="sc">$</span>Salary)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Assume normal distribution, z = 1.96 for 95%</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> mean <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> mean <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>AskAManager_Salary <span class="ot">&lt;-</span> AskAManager[AskAManager<span class="sc">$</span>Salary <span class="sc">&gt;=</span> lower <span class="sc">&amp;</span> AskAManager<span class="sc">$</span>Salary <span class="sc">&lt;=</span> upper, ]</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation before restriction: "</span>, <span class="fu">nrow</span>(AskAManager)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation before restriction:  28062"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The number of observation after restriction: "</span>, <span class="fu">nrow</span>(AskAManager_Salary)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The number of observation after restriction:  27954"</code></pre>
+</div>
+</div>
+</section>
+<section id="f.-statistical-association-between-education-and-salary" class="level3">
+<h3 class="anchored" data-anchor-id="f.-statistical-association-between-education-and-salary">f.&nbsp;Statistical association between education and salary</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>AskAManager<span class="sc">$</span>Education <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(AskAManager<span class="sc">$</span>Education)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Salary <span class="sc">~</span> Education <span class="sc">+</span> Work_Year_All <span class="sc">+</span> Work_Year_Field, <span class="at">data =</span> AskAManager)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Salary ~ Education + Work_Year_All + Work_Year_Field, 
+    data = AskAManager)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+  -7131759    -295297     -75941     184866 5992938205 
+
+Coefficients:
+                                            Estimate Std. Error t value
+(Intercept)                                   258388    2865456   0.090
+EducationCollege degree                       388874    2451683   0.159
+EducationHigh School                          -95556    2824596  -0.034
+EducationMaster's degree                        8506    2462403   0.003
+EducationPhD                                   77330    2614215   0.030
+EducationProfessional degree (MD, JD, etc.)    20935    2627777   0.008
+EducationSome college                        -122663    2562406  -0.048
+Work_Year_All11 - 20 years                   4637935    1982319   2.340
+Work_Year_All2 - 4 years                     6484532    1958765   3.311
+Work_Year_All21 - 30 years                   5015330    2102428   2.385
+Work_Year_All31 - 40 years                   4805863    2513991   1.912
+Work_Year_All41 years or more                4860590    4254315   1.143
+Work_Year_All5-7 years                       4777506    1971742   2.423
+Work_Year_All8 - 10 years                    4729564    1987572   2.380
+Work_Year_Field11 - 20 years                -4895900    1335709  -3.665
+Work_Year_Field2 - 4 years                  -5779906    1212230  -4.768
+Work_Year_Field21 - 30 years                -5262067    1655458  -3.179
+Work_Year_Field31 - 40 years                -5114463    2642505  -1.935
+Work_Year_Field41 years or more             -5173886    6496472  -0.796
+Work_Year_Field5-7 years                    -5099256    1264312  -4.033
+Work_Year_Field8 - 10 years                 -5006219    1321634  -3.788
+                                            Pr(&gt;|t|)    
+(Intercept)                                 0.928150    
+EducationCollege degree                     0.873973    
+EducationHigh School                        0.973013    
+EducationMaster's degree                    0.997244    
+EducationPhD                                0.976402    
+EducationProfessional degree (MD, JD, etc.) 0.993644    
+EducationSome college                       0.961820    
+Work_Year_All11 - 20 years                  0.019309 *  
+Work_Year_All2 - 4 years                    0.000932 ***
+Work_Year_All21 - 30 years                  0.017063 *  
+Work_Year_All31 - 40 years                  0.055932 .  
+Work_Year_All41 years or more               0.253253    
+Work_Year_All5-7 years                      0.015400 *  
+Work_Year_All8 - 10 years                   0.017340 *  
+Work_Year_Field11 - 20 years                0.000247 ***
+Work_Year_Field2 - 4 years                  1.87e-06 ***
+Work_Year_Field21 - 30 years                0.001481 ** 
+Work_Year_Field31 - 40 years                0.052944 .  
+Work_Year_Field41 years or more             0.425798    
+Work_Year_Field5-7 years                    5.52e-05 ***
+Work_Year_Field8 - 10 years                 0.000152 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 36220000 on 28041 degrees of freedom
+Multiple R-squared:  0.001114,  Adjusted R-squared:  0.0004014 
+F-statistic: 1.563 on 20 and 28041 DF,  p-value: 0.05183</code></pre>
+</div>
+</div>
+<p><strong>After controlling years of experience with the total work years and the work year in a specific field, there is no significant association between education and salary.</strong></p>
+</section>
+</section>
+<section id="problem-3" class="level2">
+<h2 class="anchored" data-anchor-id="problem-3">Problem 3</h2>
+<section id="a.-write-function-ispalindromic-that-checks-if-a-given-positive-integer-is-a-palindrome." class="level3">
+<h3 class="anchored" data-anchor-id="a.-write-function-ispalindromic-that-checks-if-a-given-positive-integer-is-a-palindrome.">a. Write function <code>isPalindromic</code> that checks if a given positive integer is a palindrome.</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>isPalindromic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check valid input: positive integer</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be a number"</span>)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be positive"</span>)</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (x<span class="sc">%%</span><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be an integer"</span>) </span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get digits from the number</span></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>    character_X <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>    digits <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(character_X, <span class="st">""</span>))</span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(digits)</span></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reverse digits</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>    reverse_digits <span class="ot">&lt;-</span> <span class="fu">rev</span>(digits)</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(reverse_digits)</span></span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>    reverse_num <span class="ot">&lt;-</span> <span class="fu">paste</span>(reverse_digits, <span class="at">collapse=</span><span class="st">''</span>)</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>    reserved <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(reverse_num)</span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check palindromic</span></span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>    isPalindromic <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(reserved <span class="sc">==</span> x)</span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return a list</span></span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>  list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">isPalindromic =</span> isPalindromic, <span class="at">reserved =</span> reserved)</span>
+<span id="cb61-29"><a href="#cb61-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(list)</span>
+<span id="cb61-30"><a href="#cb61-30" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#isPalindromic("Palindromic")</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co">#isPalindromic(-728827)</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="co">#isPalindromic(728827.5)</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">isPalindromic</span>(<span class="dv">728827</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$isPalindromic
+[1] TRUE
+
+$reserved
+[1] 728827</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">isPalindromic</span>(<span class="dv">39951</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$isPalindromic
+[1] FALSE
+
+$reserved
+[1] 15993</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-create-a-function-nextpalindrome-that-finds-the-next-palindromic-number" class="level3">
+<h3 class="anchored" data-anchor-id="b.-create-a-function-nextpalindrome-that-finds-the-next-palindromic-number">b. Create a function <code>nextPalindrome</code> that finds the next palindromic number</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>nextPalindrome <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check valid input: positive integer</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be a number"</span>)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be positive"</span>)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (x<span class="sc">%%</span><span class="dv">1</span> <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Error: Input should be an integer"</span>) </span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find the next Palindrome with while loop</span></span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (<span class="sc">!</span><span class="fu">isPalindromic</span>(x)[[<span class="dv">1</span>]]) {</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>    next_p <span class="ot">&lt;-</span> x</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(next_p)</span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nextPalindrome</span>(<span class="dv">7152</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7227</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nextPalindrome</span>(<span class="dv">765431537</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 765434567</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">391</span>, <span class="dv">9928</span>, <span class="dv">19272719</span>, <span class="dv">109</span>, <span class="dv">2</span>), nextPalindrome)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]      393     9999 19277291      111        3</code></pre>
+</div>
+</div>
+<p>The next Palindrome:</p>
+<ol type="i">
+<li><p>391 – 393</p></li>
+<li><p>9928 - 9999</p></li>
+<li><p>19272719 - 19277291</p></li>
+<li><p>109 - 111</p></li>
+<li><p>2 - 3</p></li>
+</ol>
 </section>
 </section>
 </section>

@@ -217,6 +217,7 @@ print(paste("The number of observation after restriction: ", nrow(AskAManager_Ag
 **I used the 95% confidence interval as the threshold for valid salary. I assumed the salary distributes normally because of the large sample size.**
 
 ```{r}
+#| code-fold: true
 summary(AskAManager$Salary)
 
 mean <- mean(AskAManager$Salary)
@@ -237,6 +238,7 @@ print(paste("The number of observation after restriction: ", nrow(AskAManager_Sa
 ### f. Statistical association between education and salary
 
 ```{r}
+#| code-fold: true
 AskAManager$Education <- as.factor(AskAManager$Education)
 
 model <- lm(Salary ~ Education + Work_Year_All + Work_Year_Field, data = AskAManager)
@@ -245,3 +247,100 @@ summary(model)
 ```
 
 **After controlling years of experience with the total work years and the work year in a specific field, there is no significant association between education and salary.**
+
+## Problem 3
+
+### a. Write function `isPalindromic` that checks if a given positive integer is a palindrome. 
+
+```{r}
+#| code-fold: true
+isPalindromic <- function(x) {
+  
+  # Check valid input: positive integer
+  if (!is.numeric(x)) {
+    stop("Error: Input should be a number")
+  } else if (x <= 0) {
+    stop("Error: Input should be positive")
+  } else if (x%%1 != 0) {
+    stop("Error: Input should be an integer") 
+  } else {
+    
+    # Get digits from the number
+    character_X <- as.character(x)
+    digits <- unlist(strsplit(character_X, ""))
+    #print(digits)
+    
+    # Reverse digits
+    reverse_digits <- rev(digits)
+    #print(reverse_digits)
+    reverse_num <- paste(reverse_digits, collapse='')
+    reserved <- as.numeric(reverse_num)
+    
+    # Check palindromic
+    isPalindromic <- as.logical(reserved == x)
+  }
+  
+  #return a list
+  list <- list(isPalindromic = isPalindromic, reserved = reserved)
+  return(list)
+}
+```
+
+```{r}
+#| code-fold: true
+#isPalindromic("Palindromic")
+#isPalindromic(-728827)
+#isPalindromic(728827.5)
+
+isPalindromic(728827)
+
+isPalindromic(39951)
+```
+
+### b. Create a function `nextPalindrome` that finds the next palindromic number 
+
+```{r}
+#| code-fold: true
+nextPalindrome <- function(x) {
+  
+  # Check valid input: positive integer
+  if (!is.numeric(x)) {
+    stop("Error: Input should be a number")
+  } else if (x <= 0) {
+    stop("Error: Input should be positive")
+  } else if (x%%1 != 0) {
+    stop("Error: Input should be an integer") 
+  } else {
+    
+    # Find the next Palindrome with while loop
+    x <- x + 1
+    while (!isPalindromic(x)[[1]]) {
+      x <- x + 1
+    }
+    next_p <- x
+  }
+  
+  return(next_p)
+  
+}
+```
+
+```{r}
+#| code-fold: true
+nextPalindrome(7152)
+nextPalindrome(765431537)
+
+sapply(c(391, 9928, 19272719, 109, 2), nextPalindrome)
+```
+
+**The next Palindrome:**
+
+i.  **391 – 393**
+
+ii. **9928 - 9999**
+
+iii. **19272719 - 19277291**
+
+iv. **109 - 111**
+
+v.  **2 - 3**
