@@ -168,7 +168,7 @@ names(AskAManager) <- new_names
 ### c. Restrict data with USD
 
 ```{r}
-#| code-fold: true
+#| code-fold: true 
 print(paste("The number of observation before restriction: ", nrow(AskAManager)))
 AskAManager_USD <- AskAManager[AskAManager$Currency == "USD", ]
 print(paste("The number of observation after restriction: ", nrow(AskAManager_USD)))
