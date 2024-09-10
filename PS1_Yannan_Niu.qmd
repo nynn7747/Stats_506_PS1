@@ -26,7 +26,7 @@ head(wine)
 
 ```
 
-###  b. Check data
+### b. Check data
 
 ```{r}
 #| code-fold: true
@@ -123,9 +123,9 @@ calculte_mean()
 ```{r}
 #| code-fold: true
 # Subest dataset for different classes
-phe_class_1 <- wine$`Nonflavanoid phenols`[wine$Class == 1]
-phe_class_2 <- wine$`Nonflavanoid phenols`[wine$Class == 2]
-phe_class_3 <- wine$`Nonflavanoid phenols`[wine$Class == 3]
+phe_class_1 <- wine$`Total phenols`[wine$Class == 1]
+phe_class_2 <- wine$`Total phenols`[wine$Class == 2]
+phe_class_3 <- wine$`Total phenols`[wine$Class == 3]
 
 ttest_12 <- t.test(phe_class_1, phe_class_2)
 ttest_13 <- t.test(phe_class_1, phe_class_3)
@@ -250,10 +250,12 @@ summary(model)
 
 ## Problem 3
 
-### a. Write function `isPalindromic` that checks if a given positive integer is a palindrome. 
+### a. Write function `isPalindromic` that checks if a given positive integer is a palindrome.
 
 ```{r}
 #| code-fold: true
+
+#' @param x: the input posotive integer
 isPalindromic <- function(x) {
   
   # Check valid input: positive integer
@@ -297,7 +299,7 @@ isPalindromic(728827)
 isPalindromic(39951)
 ```
 
-### b. Create a function `nextPalindrome` that finds the next palindromic number 
+### b. Create a function `nextPalindrome` that finds the next palindromic number
 
 ```{r}
 #| code-fold: true
